@@ -1,0 +1,76 @@
+ package cnla;
+
+import java.io.*; 
+ import java.util.*; 
+ class upleaky
+ {
+  private static final int NOF_PACKETS = 5;
+  public static void main(String args[])
+  {
+   int packet_sz[]=new int[NOF_PACKETS];
+   int i, clk, b_size, o_rate, p_sz, p_time = 0, op,p_time_clk = 0;
+   int p_sz_rm=0;
+   Scanner sc=new Scanner(System.in);
+   Random random=new Random();
+   for(i = 0; i<NOF_PACKETS; ++i)
+    packet_sz[i] = random.nextInt(50);
+   for(i = 0; i<NOF_PACKETS; ++i)
+    System.out.println( + i+" " +packet_sz[i]);
+   System.out.println("\nEnter the Output rate:");
+   o_rate=sc.nextInt();
+   System.out.println("Enter the Bucket Size:");
+   b_size=sc.nextInt();
+   for(i = 0; i<NOF_PACKETS; i++)
+   {
+    if( (packet_sz[i] + p_sz_rm) > b_size)
+    {
+
+      System.out.println(+packet_sz[i]+ "  " + b_size);
+      System.out.println("\n\nBucket capacity exceeded-PACKETS REJECTED!!");
+
+      System.out.println("\n Packet of size Transmitted"+o_rate);
+      p_sz_rm -= o_rate;
+      System.out.println("----Bytes Remaining after Transmission:"+p_sz_rm);
+    }
+    else
+    {
+     p_sz_rm+=packet_sz[i];
+     
+     System.out.println("Incomming Packet size:"+packet_sz[i]);
+     System.out.println("Bytes remaining to Transmit: "+p_sz_rm);
+     
+     if(p_sz_rm > b_size)
+      System.out.println("Bucket capacity exceeded");    
+     
+         if(p_sz_rm <= o_rate)
+         {
+          System.out.println("\n Packet of size  Transmitted"+p_sz_rm);
+             p_sz_rm=0;
+         }
+         else
+         { System.out.println("\n Packet of size Transmitted"+o_rate);
+             p_sz_rm -= o_rate;
+             System.out.println("----Bytes Remaining after Transmission:"+p_sz_rm);
+         }
+    
+    }
+    
+        }
+     
+    
+  while (p_sz_rm>0)
+  {
+	  if(p_sz_rm <= o_rate)
+      {
+       System.out.println("\n Packet of size  Transmitted"+p_sz_rm);
+          p_sz_rm=0;
+      }
+      else
+      { System.out.println("\n Packet of size Transmitted"+o_rate);
+          p_sz_rm -= o_rate;
+          System.out.println("----Bytes Remaining after Transmission:"+p_sz_rm);
+      }
+  }
+  System.out.println("\n BUCKET IS NOW EMPTY!!!");
+  }
+ }
